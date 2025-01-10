@@ -1,26 +1,30 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import SearchBar from '../components/SearchBar/SearchBar';
 import {colors} from '../constants/colors';
-import {fontSize, spacing} from '../constants/dimentions';
+import {fontSize, spacing} from '../constants/dimensions';
 import {fontFamily} from '../constants/fonts';
 
 const HomeScreen = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Unwind the Perfect Watch</Text>
-    </View>
+      <SearchBar />
+    </SafeAreaView>
   );
 };
-export default HomeScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    padding: spacing.md,
+    backgroundColor: colors.background,
   },
   heading: {
     fontSize: fontSize.xxl,
     color: colors.black,
     fontFamily: fontFamily.bold,
+    marginVertical: spacing.lg,
   },
 });
+
+export default HomeScreen;
