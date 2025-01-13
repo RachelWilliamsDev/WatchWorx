@@ -1,5 +1,6 @@
 import React from 'react';
 import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import Category from '../components/Category/Category';
 import SearchBar from '../components/SearchBar/SearchBar';
 import {colors} from '../constants/colors';
 import {fontSize, spacing} from '../constants/dimensions';
@@ -10,6 +11,7 @@ const HomeScreen = () => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Unwind the Perfect Watch</Text>
       <SearchBar />
+      <Category />
     </SafeAreaView>
   );
 };
