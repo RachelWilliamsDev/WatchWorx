@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {
   Image,
   Platform,
@@ -11,24 +11,31 @@ import {colors} from '../../constants/colors';
 import {fontSize, spacing} from '../../constants/dimensions';
 import {fontFamily} from '../../constants/fonts';
 
-const imageUrl =
-  'https://media-ik.croma.com/prod/https://media.croma.com/image/upload/v1725993269/Croma%20Assets/Communication/Wearable%20Devices/Images/309297_0_bjgmau.png';
-
-const ProductCard = ({item}) => {
+const ProductCard = ({item: {imageUrl, name, brand, price}}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      accessible
+      accessibilityLabel={`View details for ${name}`}>
       <View style={styles.imageContainer}>
-        <Image source={{uri: item.imageUrl}} style={styles.productImage} />
+        <Image
+          source={{uri: imageUrl}}
+          style={styles.productImage}
+          onError={e => console.error('Image failed to load', e)}
+          accessibilityLabel={`${name} image`}
+        />
       </View>
       <View style={styles.contentContainer}>
-        <Text style={styles.contentName}>{item.name}</Text>
-        <Text style={styles.contentBrand}>{item.brand}</Text>
-        <Text style={styles.contentPrice}>£{item.price}</Text>
+        <Text style={styles.contentName}>{name}</Text>
+        <Text style={styles.contentBrand}>{brand}</Text>
+        <Text style={styles.contentPrice}>£{price}</Text>
       </View>
     </TouchableOpacity>
   );
 };
-export default ProductCard;
+
+export default memo(ProductCard);
+
 const styles = StyleSheet.create({
   container: {
     width: '48%',
