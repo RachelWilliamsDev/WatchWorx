@@ -27,4 +27,12 @@ export const category = [
     id: 7,
     name: 'Headphones',
   },
+  {
+    id: 8,
+    name: 'Sony',
+  },
+  {
+    id: 9,
+    name: 'Razer',
+  },
 ];
