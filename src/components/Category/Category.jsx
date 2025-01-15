@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../constants/colors';
 import {fontSize, spacing} from '../../constants/dimensions';
@@ -21,14 +21,13 @@ const CategoryItem = ({item, selectedCategory, onSelect}) => (
   </TouchableOpacity>
 );
 
-const Category = () => {
-  const [selectedCategory, setSelectedCategory] = useState(
-    category?.[0]?.name || '',
+const Category = ({selectedCategory, handleUpdateCategory}) => {
+  const handleSelectedCategory = useCallback(
+    name => {
+      handleUpdateCategory(name);
+    },
+    [handleUpdateCategory],
   );
-
-  const handleSelectedCategory = useCallback(name => {
-    setSelectedCategory(name);
-  }, []);
 
   const renderItem = ({item}) => (
     <CategoryItem
