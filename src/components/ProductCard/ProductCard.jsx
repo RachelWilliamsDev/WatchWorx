@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {memo} from 'react';
 import {
   Image,
@@ -11,12 +12,24 @@ import {colors} from '../../constants/colors';
 import {fontSize, spacing} from '../../constants/dimensions';
 import {fontFamily} from '../../constants/fonts';
 
-const ProductCard = ({item: {imageUrl, name, brand, price}}) => {
+const ProductCard = ({item: {imageUrl, name, brand, price, images}}) => {
+  const navigation = useNavigation();
+  const handleProductDetailsScreen = () => {
+    navigation.navigate('PRODUCT_DETAILS', {
+      imageUrl,
+      name,
+      brand,
+      price,
+      images,
+    });
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
       accessible
-      accessibilityLabel={`View details for ${name}`}>
+      accessibilityLabel={`View details for ${name}`}
+      onPress={handleProductDetailsScreen}>
       <View style={styles.imageContainer}>
         <Image
           source={{uri: imageUrl}}
