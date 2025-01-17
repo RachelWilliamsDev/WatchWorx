@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {Dimensions, View} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -13,32 +13,31 @@ const Carousel = ({images}) => {
   const scrollX = useSharedValue(0);
   const [paginationIndex, setPaginationIndex] = useState(0);
 
-  const onScrollHandler = useAnimatedScrollHandler({
-    onScroll: e => {
-      scrollX.value = e.contentOffset.x;
+  const handleScroll = useAnimatedScrollHandler({
+    onScroll: event => {
+      scrollX.value = event.contentOffset.x;
     },
   });
 
-  const onViewableItemsChanged = useRef(({viewableItems}) => {
+  const handleViewableItemsChanged = useCallback(({viewableItems}) => {
+    const firstVisibleItem = viewableItems[0];
     if (
-      viewableItems[0]?.index !== undefined &&
-      viewableItems[0]?.index !== null
+      firstVisibleItem?.index !== undefined &&
+      firstVisibleItem?.index !== null
     ) {
-      setPaginationIndex(viewableItems[0].index);
+      setPaginationIndex(firstVisibleItem.index);
     }
-  }).current;
+  }, []);
 
   const viewabilityConfigCallbackPairs = useRef([
     {
-      viewabilityConfig: {
-        itemVisiblePercentThreshold: 50,
-      },
-      onViewableItemsChanged,
+      viewabilityConfig: {itemVisiblePercentThreshold: 50},
+      onViewableItemsChanged: handleViewableItemsChanged,
     },
   ]);
 
   return (
-    <View>
+    <View accessible={true} accessibilityRole="adjustable">
       <Animated.FlatList
         data={images}
         renderItem={({item, index}) => (
@@ -47,21 +46,32 @@ const Carousel = ({images}) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
-        onScroll={onScrollHandler}
+        onScroll={handleScroll}
         scrollEventThrottle={16}
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         keyExtractor={(item, index) => `${item}-${index}`}
         snapToInterval={width}
-        snapToAlignment={'center'}
+        snapToAlignment="center"
         decelerationRate="fast"
-        contentContainerStyle={{
-          alignItems: 'center',
-        }}
+        contentContainerStyle={styles.contentContainer}
         removeClippedSubviews={false}
+        accessibilityRole="list"
+        accessibilityHint="Swipe left or right to navigate through the carousel items"
       />
-      <Pagination items={images} scrollX={scrollX} index={paginationIndex} />
+      <Pagination
+        items={images}
+        scrollX={scrollX}
+        index={paginationIndex}
+        accessibilityHint="Pagination indicators showing the current item in the carousel"
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  contentContainer: {
+    alignItems: 'center',
+  },
+});
 
 export default Carousel;
