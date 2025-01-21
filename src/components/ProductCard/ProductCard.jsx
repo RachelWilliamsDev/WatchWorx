@@ -12,7 +12,9 @@ import {colors} from '../../constants/colors';
 import {fontSize, spacing} from '../../constants/dimensions';
 import {fontFamily} from '../../constants/fonts';
 
-const ProductCard = ({item: {imageUrl, name, brand, price, images}}) => {
+const ProductCard = ({
+  item: {imageUrl, name, brand, price, images, details, review},
+}) => {
   const navigation = useNavigation();
   const handleProductDetailsScreen = () => {
     navigation.navigate('PRODUCT_DETAILS', {
@@ -21,6 +23,8 @@ const ProductCard = ({item: {imageUrl, name, brand, price, images}}) => {
       brand,
       price,
       images,
+      details,
+      review,
     });
   };
 
