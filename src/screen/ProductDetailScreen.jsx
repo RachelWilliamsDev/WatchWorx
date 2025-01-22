@@ -10,13 +10,16 @@ import ProductDetail from '../components/ProductDetails/ProductDetail';
 import ProductReviews from '../components/ProductReviews/ProductReviews';
 import ProductTabSelector from '../components/ProductTabSelector/ProductTabSelector';
 
-import {spacing} from '../constants/dimensions';
+import {ShoppingCartIcon} from 'lucide-react-native';
+import CardButton from '../components/CardButton/CardButton';
+import {colors} from '../constants/colors';
+import {iconSize, spacing} from '../constants/dimensions';
 
 const TABS = ['Description', 'Reviews'];
 
 const ProductDetailScreen = () => {
   const route = useRoute();
-  const {name, brand, images, details, review} = route.params;
+  const {name, brand, images, details, review, price} = route.params;
 
   const [activeTab, setActiveTab] = useState('Description');
 
@@ -31,8 +34,8 @@ const ProductDetailScreen = () => {
   return (
     <View style={styles.container}>
       <Header />
+      <Carousel images={images} />
       <ScrollView style={styles.scrollView}>
-        <Carousel images={images} />
         <ProductDetail title={name} brand={brand} />
         <ProductColors />
         <ProductTabSelector
@@ -42,6 +45,11 @@ const ProductDetailScreen = () => {
         />
         {ActiveTabContent}
       </ScrollView>
+      <CardButton
+        price={price}
+        icon={<ShoppingCartIcon color={colors.background} size={iconSize.md} />}
+        text={`Add to Cart £${price}`}
+      />
     </View>
   );
 };
